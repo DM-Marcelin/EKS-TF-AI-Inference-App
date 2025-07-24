@@ -1,17 +1,23 @@
 variable "aws_region" {
-  description = "AWS region to deploy resources"
-  type        = string
-  default     = "us-east-1"
+  type    = string
+  default = "us-east-1"
 }
 
 variable "aws_profile" {
-  description = "AWS CLI profile name"
-  type        = string
-  default     = "default"
+  type    = string
+  default = "default"
 }
 
 variable "cluster_name" {
-  description = "EKS cluster name"
-  type        = string
-  default     = "bny-eks-cluster"
+  type    = string
+  default = "bny-eks-cluster"
+}
+
+variable "key_name" {
+  type = string
+}
+
+variable "my_ip" {
+  type = string
+  description = "Your current public IP address with /32, e.g. 12.34.56.78/32"
 }

@@ -22,3 +22,21 @@ terraform.rc
 # Mac/Windows system files
 .DS_Store
 Thumbs.db
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.backup
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+*.env
+.env
+
+# VS Code
+.vscode/

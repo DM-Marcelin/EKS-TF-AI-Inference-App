@@ -1,0 +1,14 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: bny-eks-cluster
+  region: us-east-1
+
+iam:
+  withOIDC: true
+  identityMappings:
+    - arn: arn:aws:iam::007160697038:role/EC2-Lab-EKS-Terraform
+      username: system:masters
+      groups:
+        - system:masters

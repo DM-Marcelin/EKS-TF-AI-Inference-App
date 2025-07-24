@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-inference-service
+spec:
+  selector:
+    app: ai-inference
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer  # You can change to LoadBalancer later if needed
+
+# Kubernetes LoadBalancer Service for AI Inference App
+# Exposes app to public internet

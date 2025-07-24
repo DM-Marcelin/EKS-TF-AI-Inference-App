@@ -29,6 +29,22 @@ module "eks" {
 
   enable_irsa = true
 
+ access_entries = {
+  dill_owner = {
+    principal_arn = "arn:aws:iam::007160697038:user/DillOwner"
+    type          = "STANDARD"
+
+    access_policy_associations = {
+      admin = {
+        policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+        access_scope = {
+          type = "cluster"
+        }
+      }
+    }
+  }
+}
+
   eks_managed_node_group_defaults = {
     instance_types = ["t3.medium"]
   }
@@ -44,5 +60,43 @@ module "eks" {
   tags = {
     Environment = "dev"
     Project     = "BNY EKS Lab"
+  }
+}
+
+resource "aws_security_group" "bastion_sg" {
+  name        = "bastion-sg"
+  description = "Allow SSH from my IP"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "bastion-sg"
+  }
+}
+
+resource "aws_instance" "bastion" {
+  ami                         = "ami-0c02fb55956c7d316" # Amazon Linux 2 (us-east-1)
+  instance_type               = "t3.micro"
+  subnet_id                   = module.vpc.public_subnets[0]
+  vpc_security_group_ids      = [aws_security_group.bastion_sg.id]
+  associate_public_ip_address = true
+  key_name                    = var.key_name
+
+  tags = {
+    Name = "BastionHost"
   }
 }
